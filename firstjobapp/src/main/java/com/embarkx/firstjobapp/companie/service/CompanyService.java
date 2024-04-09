@@ -8,7 +8,7 @@ public interface CompanyService {
 
     public List<Company> getAll();
 
-    public Company create(Company company);
+    public boolean create(Company company);
 
     public boolean delete(Long id);
 

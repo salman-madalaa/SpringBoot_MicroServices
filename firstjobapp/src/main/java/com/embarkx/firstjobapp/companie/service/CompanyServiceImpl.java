@@ -18,8 +18,13 @@ public class CompanyServiceImpl implements CompanyService {
         return companieRepo.findAll();
     }
 
-    public Company create(Company company) {
-        return companieRepo.save(company);
+    public boolean create(Company company) {
+        try {
+            companieRepo.save(company);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean delete(Long id) {

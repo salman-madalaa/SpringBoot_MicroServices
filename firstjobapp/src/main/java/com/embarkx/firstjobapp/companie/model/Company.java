@@ -1,6 +1,7 @@
 package com.embarkx.firstjobapp.companie.model;
 
 import com.embarkx.firstjobapp.job.model.Job;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,8 @@ public class Company {
     private String name;
     private String description;
 
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "company")
     private List<Job> jobs;
 
 //    private List<Review> reviews;
