@@ -28,10 +28,11 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     public boolean delete(Long id) {
-        try {
+
+        if(companieRepo.existsById(id)) {
             companieRepo.deleteById(id);
             return true;
-        } catch (Exception e) {
+        } else {
             return false;
         }
     }
@@ -53,10 +54,6 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company getById(Long id) {
-        Optional<Company> optionalCompanie = companieRepo.findById(id);
-        if (optionalCompanie.isPresent()) {
-            return optionalCompanie.get();
-        }
-        return null;
+        return companieRepo.findById(id).orElse(null);
     }
 }

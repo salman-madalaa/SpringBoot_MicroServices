@@ -27,7 +27,7 @@ public class CompanyController {
         boolean res = companieService.create(company);
         if (res)
             return new ResponseEntity<>("Company created successfully", HttpStatus.CREATED);
-        return new ResponseEntity("Company created failure", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Company created failure", HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
@@ -50,10 +50,11 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Company> getById(@PathVariable Long id) {
-
         Company company = companieService.getById(id);
+        if(company != null)
+            return new ResponseEntity<>(company, HttpStatus.OK);
 
-        return new ResponseEntity<>(company, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
