@@ -1,10 +1,10 @@
-package com.embarkx.sericereg;
+package com.embarkx.servicereg;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SericeRegApplicationTests {
+class ServiceRegApplicationTests {
 
 	@Test
 	void contextLoads() {

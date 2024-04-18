@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.embarkx</groupId>
-	<artifactId>serice-reg</artifactId>
+	<artifactId>service-reg</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>serice-reg</name>
+	<name>service-reg</name>
 	<description>Service registry for micro services</description>
 	<properties>
 		<java.version>17</java.version>

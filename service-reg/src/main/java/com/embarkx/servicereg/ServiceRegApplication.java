@@ -1,13 +1,13 @@
-package com.embarkx.sericereg;
+package com.embarkx.servicereg;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SericeRegApplication {
+public class ServiceRegApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SericeRegApplication.class, args);
+		SpringApplication.run(ServiceRegApplication.class, args);
 	}
 
 }
