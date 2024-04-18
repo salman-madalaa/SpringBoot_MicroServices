@@ -1,13 +1,18 @@
 package com.embarkx.jobms.job.service;
 
 
+import com.embarkx.jobms.job.dto.JobWithCompanyDTO;
+import com.embarkx.jobms.job.model.Company;
 import com.embarkx.jobms.job.model.Job;
 import com.embarkx.jobms.job.repo.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class JonServiceImpl implements JobService {
@@ -16,9 +21,34 @@ public class JonServiceImpl implements JobService {
     JobRepository jobRepository;
 
     @Override
-    public List<Job> findAll() {
-        return jobRepository.findAll();
+    public List<JobWithCompanyDTO> findAll() {
+        ArrayList<JobWithCompanyDTO> jobWithCompanyDTOS = new ArrayList<>();
+
+        List<Job> jobs = jobRepository.findAll();
+
+//        jobs.stream().forEach(job -> {
+//            jobWithCompanyDTOS.add(convertToDTO(job));
+//        });
+
+//        for (Job job:jobs){
+//            jobWithCompanyDTOS.add(convertToDTO(job));
+//        }
+
+//        return jobWithCompanyDTOS;
+
+        return jobs.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
+
+
+    private JobWithCompanyDTO convertToDTO(Job job) {
+        RestTemplate restTemplate = new RestTemplate();
+        Company company = restTemplate.getForEntity("http://localhost:8081/companies/" + job.getCompanyId(), Company.class).getBody();
+        JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
+        jobWithCompanyDTO.setJob(job);
+        jobWithCompanyDTO.setCompany(company);
+        return jobWithCompanyDTO;
+    }
+
 
     @Override
     public String createJob(Job job) {
