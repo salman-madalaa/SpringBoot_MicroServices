@@ -1,11 +1,16 @@
 package com.embarkx.jobms.service;
 
 
-import com.embarkx.jobms.dto.JobWithCompanyDTO;
+import com.embarkx.jobms.dto.JobDTO;
+import com.embarkx.jobms.mapper.JobMapper;
 import com.embarkx.jobms.model.Company;
 import com.embarkx.jobms.model.Job;
+import com.embarkx.jobms.model.Review;
 import com.embarkx.jobms.repo.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,8 +29,8 @@ public class JonServiceImpl implements JobService {
     RestTemplate restTemplate;
 
     @Override
-    public List<JobWithCompanyDTO> findAll() {
-        ArrayList<JobWithCompanyDTO> jobWithCompanyDTOS = new ArrayList<>();
+    public List<JobDTO> findAll() {
+        ArrayList<JobDTO> jobDTOS = new ArrayList<>();
 
         List<Job> jobs = jobRepository.findAll();
 
@@ -43,12 +48,10 @@ public class JonServiceImpl implements JobService {
     }
 
 
-    private JobWithCompanyDTO convertToDTO(Job job) {
-        Company company = restTemplate.getForEntity("http://COMPANY-MS:8081/companies/" + job.getCompanyId(), Company.class).getBody();
-        JobWithCompanyDTO jobWithCompanyDTO = new JobWithCompanyDTO();
-        jobWithCompanyDTO.setJob(job);
-        jobWithCompanyDTO.setCompany(company);
-        return jobWithCompanyDTO;
+    private JobDTO convertToDTO(Job job) {
+        Company company = restTemplate.getForEntity("http://COMPANY-MS/companies/" + job.getCompanyId(), Company.class).getBody();
+        ResponseEntity<List<Review>> reviews = restTemplate.exchange("http://REVIEW-MS/reviews?companyId=" + job.getCompanyId(), HttpMethod.GET, null, new ParameterizedTypeReference<List<Review>>() {});
+        return JobMapper.jobWithCompanyDTO(job,company,reviews.getBody());
     }
 
 
@@ -59,8 +62,9 @@ public class JonServiceImpl implements JobService {
     }
 
     @Override
-    public Job getJobById(Long id) {
-        return jobRepository.findById(id).orElse(null);
+    public JobDTO getJobById(Long id) {
+       Job job= jobRepository.findById(id).orElse(null);
+        return convertToDTO(job);
     }
 
     @Override

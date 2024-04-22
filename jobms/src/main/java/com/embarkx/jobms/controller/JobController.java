@@ -1,6 +1,6 @@
 package com.embarkx.jobms.controller;
 
-import com.embarkx.jobms.dto.JobWithCompanyDTO;
+import com.embarkx.jobms.dto.JobDTO;
 import com.embarkx.jobms.model.Job;
 import com.embarkx.jobms.service.JobService;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class JobController {
     }
 
     @GetMapping
-    public ResponseEntity<List<JobWithCompanyDTO>> findAll() {
+    public ResponseEntity<List<JobDTO>> findAll() {
         return ResponseEntity.ok(jobService.findAll());
     }
 
@@ -31,11 +31,11 @@ public class JobController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Job> getJob(@PathVariable("id") Long id) {
-        Job job = jobService.getJobById(id);
-        if (job != null)
-            return new ResponseEntity<>(job, HttpStatus.OK);
-        return new ResponseEntity<Job>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<JobDTO> getJob(@PathVariable("id") Long id) {
+        JobDTO jobDTO = jobService.getJobById(id);
+        if ( jobDTO != null)
+            return new ResponseEntity<>(jobDTO, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
